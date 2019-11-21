@@ -1,4 +1,4 @@
-# Modern Javacript - Qualogy Workshop
+# Modern Javacript - [Qualogy](https://www.qualogy.com/) Workshop
 Keeping up in the JavaScript world 🏃‍
 
 #### Prerequisites
@@ -19,6 +19,3 @@ For demo purpose the app was not build in the best way possible. In future works
 
 ## Exercices
 The 2 exercises from the workshop can be found in the folder 'Excercises' under 1.md and 2.md.
-
-
-### [Qualogy](https://www.qualogy.com/)
