@@ -1,0 +1,23 @@
+## editors
+.idea
+*.vscode
+*.iml
+*.iws
+
+## system files
+.DS_Store
+
+## npm
+presentatie/node_modules
+/presentatie/node_modules/
+qualogy-scrum/node_modules
+/qualogy-scrum/node_modules/
+npm-debug.log
+
+## for our builds
+/presentatie/lib/
+/presentatie/dist/
+/qualogy-scrum/dist/
+
+## temp folders
+/.tmp
