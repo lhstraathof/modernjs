@@ -17,5 +17,5 @@ Your browser should open with the application running. If not, open http://127.0
 The the example app Qualogy Scrum as a reference to learn more about JS ES6 and Lit-Element.
 For demo purpose the app was not build in the best way possible. In future workshops we will improve the app.
 
-## Exercices
-The 2 exercises from the workshop can be found in the folder 'Excercises' under 1.md and 2.md.
+## Exercises
+The 2 exercises from the workshop can be found in the folder 'Exercises' under 1.md and 2.md.
