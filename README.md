@@ -1,4 +1,4 @@
-# Modern Javacript - [Qualogy](https://www.qualogy.com/) Workshop
+# Modern JavaScript - [Qualogy](https://www.qualogy.com/) Workshop
 Keeping up in the JavaScript world 🏃‍
 
 #### Prerequisites
