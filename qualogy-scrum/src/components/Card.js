@@ -53,6 +53,8 @@ export class Card extends LitElement {
       story: { type: Object },
       beingDragged: { type: Boolean },
       setStoryBeingDragged: { type: Function },
+      orderOfStoryBeingDragged: { type: Number },
+      setOrderOfStoryBeingDragged: { type: Function },
     };
   }
 
@@ -60,6 +62,8 @@ export class Card extends LitElement {
     super();
     this.ondragstart = e => this._dragStart(e);
     this.ondragend = e => this._dragEnd(e);
+    this.ondragover = e => this._onDragOver(e);
+    this.ondragleave = e => this._onDragLeave(e);
   }
 
   render() {
@@ -109,6 +113,18 @@ export class Card extends LitElement {
   _dragEnd(event) {
     event.preventDefault;
     this.beingDragged = false;
+  }
+
+  _onDragOver(event) {
+    event.preventDefault();
+    if(!this.beingDragged) {
+      this.setOrderOfStoryBeingDragged(this.story.id);
+    }
+  }
+
+  _onDragLeave(event) {
+    event.preventDefault();
+    this.setOrderOfStoryBeingDragged();
   }
 }
 

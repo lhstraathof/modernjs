@@ -19,6 +19,8 @@ export class KanbanBoard extends LitElement {
       setLaneBeingDragEntered: { type: Function },
       saveStoryBeingDropped: { type: Function },
       setStoryBeingDragged: { type: Function },
+      orderOfStoryBeingDragged: { type: Object },
+      setOrderOfStoryBeingDragged: { type: Function },
       addStory: { type: Function },
     };
   }
@@ -45,6 +47,8 @@ export class KanbanBoard extends LitElement {
         .setLaneBeingDragEntered=${this.setLaneBeingDragEntered}
         .saveStoryBeingDropped=${this.saveStoryBeingDropped}
         .setStoryBeingDragged=${this.setStoryBeingDragged}
+        .orderOfStoryBeingDragged=${this.orderOfStoryBeingDragged}
+        .setOrderOfStoryBeingDragged=${this.setOrderOfStoryBeingDragged}
         .addStory=${this.addStory}
         ></component-card>
         `;

@@ -39,21 +39,22 @@ export class QualogyScrum extends LitElement {
       .joke {
         font-size: 0.9rem;
         color: gray;
+        text-align: center;
       }
 
       nav {
-          margin-left: auto;
+        margin-left: auto;
       }
 
       .menu li {
-          display: inline-block;
-          margin-left: 20px;
-          cursor: pointer;
-          color: blue;
+        display: inline-block;
+        margin-left: 20px;
+        cursor: pointer;
+        color: blue;
       }
 
       .menu li:hover {
-          color: green;
+        color: green;
       }
     `;
   }
@@ -62,6 +63,7 @@ export class QualogyScrum extends LitElement {
     return {
       title: { type: String },
       storyBeingDragged: { type: Number },
+      orderOfStoryBeingDragged: { type: Object },
       stories: { type: Array },
       joke: { type: String },
       page: { type: String }
@@ -73,6 +75,9 @@ export class QualogyScrum extends LitElement {
     this._saveStoryBeingDropped = this._saveStoryBeingDropped.bind(this);
     this._setStoryBeingDragged = this._setStoryBeingDragged.bind(this);
     this._setLaneBeingDragEntered = this._setLaneBeingDragEntered.bind(this);
+    this._setOrderOfStoryBeingDragged = this._setOrderOfStoryBeingDragged.bind(
+      this
+    );
     this._addStory = this._addStory.bind(this);
     this.title = "Hey Qualogy";
     this.stories = [
@@ -81,26 +86,27 @@ export class QualogyScrum extends LitElement {
         title: "Intro",
         assignedTo: undefined,
         state: "To Do",
-        tags: []
+        tags: [],
       },
       {
         id: 2,
         title: "Setup Tooling",
         assignedTo: "Lars Straathof",
         state: "To Do",
-        tags: ["Presenting"]
+        tags: ["Presenting"],
       },
       {
         id: 3,
         title: "ES6 Features",
         assignedTo: "Lars Straathof",
-        state: "Doing",
-        tags: ["Presenting", "Develop"]
+        state: "To Do",
+        tags: ["Presenting", "Develop"],
       }
     ];
     this.kanbanLanes = ["To Do", "Doing", "Done"];
     this.laneBeingDragEntered = undefined;
     this.storyBeingDragged = undefined;
+    this.orderOfStoryBeingDragged = undefined;
     this.page = "kanban";
   }
 
@@ -143,19 +149,41 @@ export class QualogyScrum extends LitElement {
     this.storyBeingDragged = id;
   }
 
+  _setOrderOfStoryBeingDragged(id) {
+    this.orderOfStoryBeingDragged = id;
+  }
+
   _saveStoryBeingDropped(lane) {
     if (this.storyBeingDragged && lane) {
       const indexOfDraggedStory = this.stories.findIndex(
         i => i.id === this.storyBeingDragged
       );
-      const newStories = [...this.stories];
+      let newStories = [...this.stories];
       newStories[indexOfDraggedStory].state = lane;
+      
+      const addStory = {...newStories[indexOfDraggedStory]};
+      if(this.orderOfStoryBeingDragged !== undefined) {
+        newStories.splice( indexOfDraggedStory, 1 );
+        const indexOfTargetStory = newStories.findIndex(
+          i => i.id === (this.orderOfStoryBeingDragged)
+        );
+        const reorderedItems = [
+          ...newStories.slice(0, indexOfTargetStory),
+          addStory,
+          ...newStories.slice(indexOfTargetStory),
+        ];
+        newStories = reorderedItems;
+
+      } else {
+        newStories.splice( indexOfDraggedStory, 1 );
+        newStories.push(addStory);
+      }
+
       this.stories = newStories;
     }
   }
 
   _addStory(story, lane) {
-    console.log(story);
     const newStories = [...this.stories];
     newStories.push({
       id: newStories.length + 1,
@@ -165,14 +193,13 @@ export class QualogyScrum extends LitElement {
       tags: []
     });
     this.stories = newStories;
-    console.log(this.stories);
   }
 
   _getJoke() {
     fetch("https://sv443.net/jokeapi/category/Programming?blacklistFlags=nsfw")
       .then(response => response.json())
       .then(json => {
-        this.joke = json.joke;
+        this.joke = json.joke || html`${json.setup} <br/> ${json.delivery}`;
         console.log(json);
       })
       .catch(err => console.warn(err));
@@ -186,7 +213,6 @@ export class QualogyScrum extends LitElement {
 
   _renderPage() {
     const page = this.page;
-
     switch (page) {
       case "kanban":
         return html`
@@ -196,24 +222,23 @@ export class QualogyScrum extends LitElement {
             .setLaneBeingDragEntered=${this._setLaneBeingDragEntered}
             .saveStoryBeingDropped=${this._saveStoryBeingDropped}
             .setStoryBeingDragged=${this._setStoryBeingDragged}
+            .orderOfStoryBeingDragged=${this.orderOfStoryBeingDragged}
+            .setOrderOfStoryBeingDragged=${this._setOrderOfStoryBeingDragged}
             .addStory=${this._addStory}
           ></page-kanban>
         `;
-        break;
 
       case "backlog":
         return html`
           <page-backlog></page-backlog>
         `;
-        break;
 
       default:
-          return html`
+        return html`
           <div>
             <h2>404 - page not found</h2>
           </div>
-          `;
-        break;
+        `;
     }
   }
 }

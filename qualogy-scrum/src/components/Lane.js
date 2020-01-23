@@ -37,6 +37,8 @@ export class Lane extends LitElement {
       stories: { type: Array },
       saveStoryBeingDropped: { type: Function },
       setStoryBeingDragged: { type: Function },
+      orderOfStoryBeingDragged: { type: Object },
+      setOrderOfStoryBeingDragged: { type: Function },
       addStory: { type: Function },
       dragOver: { type: Boolean }
     };
@@ -68,6 +70,8 @@ export class Lane extends LitElement {
             <component-card
               .story=${story}
               .setStoryBeingDragged=${this.setStoryBeingDragged}
+              .orderOfStoryBeingDragged=${this.orderOfStoryBeingDragged}
+              .setOrderOfStoryBeingDragged=${this.setOrderOfStoryBeingDragged}
             ></component-card>
           `
         )}
@@ -91,6 +95,8 @@ export class Lane extends LitElement {
 
   _onDrop(event) {
     event.preventDefault();
+    console.log('drop');
+    console.log(this.orderOfStoryBeingDragged)
     this.saveStoryBeingDropped(this.lane);
     this._onDragLeave(event);
   }
